@@ -1,0 +1,159 @@
+
+//
+//  CarOAD.pch
+//  CarOAD
+//
+//  Created by xf_Lian on 2017/9/29.
+//  Copyright © 2017年 xf_Lian. All rights reserved.
+//
+
+#ifndef CarOAD_pch
+#define CarOAD_pch
+
+//  正式发布
+//#define CarOadMainHttpURL  @"http://appb01.caroad.com:8080/MechanicApi/"
+//#define CarOadImageURL     @"http://appb01.caroad.com:8080/"
+
+//  测试用
+#define CarOadMainHttpsURL @""
+//#define CarOadMainHttpURL  @"http://192.168.1.158:8080/MechanicApi/"
+#define CarOadMainHttpURL  @"http://appb02.caroad.com:8080/MechanicApi/"
+#define CarOadImageURL     @"http://appb02.caroad.com:8080/"
+
+#define AppName                   @"凯路登-技师版"
+#define BundleId                  @"com.cn.caroad.mechanic"
+#define Version                   @"V 1.0.0"
+#define CustomerServicePhone      @"400-181-7007"
+#define carPlaceholderImageString @"照片"
+#define OADAccountInfoFile [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"accountInfo.data"]
+
+//  数据请求接口组合
+#define MYPostClassUrl(class,url) ([NSString stringWithFormat:@"%@%@",class,url])
+
+//  颜色
+#define CarOadColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+//  主题色
+#define MainColor       CarOadColor(41, 147, 240)
+//  分割线灰色
+#define LineColor       CarOadColor(200, 200, 200)
+//  默认背景灰色
+#define BackGrayColor   CarOadColor(237, 237, 237)
+//  统一黑色字体
+#define TextBlackColor  CarOadColor(51, 51, 51)
+//  统一灰色字体
+#define TextGrayColor   CarOadColor(153, 153, 153)
+
+#ifdef DEBUG
+#define CarOadLog(s, ... ) NSLog(@"[%@ in line %d] ===============>%@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+#define CarOadLog(s, ... )
+#endif
+
+//  屏幕宽
+#define Screen_Width [UIScreen mainScreen].bounds.size.width
+//  屏幕高
+#define Screen_Height [UIScreen mainScreen].bounds.size.height
+
+#define SafeAreaTopHeight    (Screen_Height == 812.0 ? 88 : 64)
+#define SafeAreaBottomHeight (Screen_Height == 812.0 ? 34 : 0)
+
+#define Scale_Width  [UIScreen mainScreen].bounds.size.width/375
+#define Scale_Height [UIScreen mainScreen].bounds.size.height/(Screen_Height == 812.0 ? 812.0 : 667)
+
+#define UIFont_10 [UIFont fontWithName:@"Avenir-Book" size:10.f *Scale_Width]
+#define UIFont_11 [UIFont fontWithName:@"Avenir-Book" size:11.f *Scale_Width]
+#define UIFont_12 [UIFont fontWithName:@"Avenir-Book" size:12.f *Scale_Width]
+#define UIFont_13 [UIFont fontWithName:@"Avenir-Book" size:13.f *Scale_Width]
+#define UIFont_14 [UIFont fontWithName:@"Avenir-Book" size:14.f *Scale_Width]
+#define UIFont_15 [UIFont fontWithName:@"Avenir-Book" size:15.f *Scale_Width]
+#define UIFont_16 [UIFont fontWithName:@"Avenir-Book" size:16.f *Scale_Width]
+#define UIFont_17 [UIFont fontWithName:@"Avenir-Book" size:17.f *Scale_Width]
+#define UIFont_18 [UIFont fontWithName:@"Avenir-Book" size:18.f *Scale_Width]
+#define UIFont_19 [UIFont fontWithName:@"Avenir-Book" size:19.f *Scale_Width]
+#define UIFont_20 [UIFont fontWithName:@"Avenir-Book" size:20.f *Scale_Width]
+
+#define UIFont_M_15 [UIFont fontWithName:@"STHeitiSC-Medium" size:15.f *Scale_Width]
+#define UIFont_M_16 [UIFont fontWithName:@"STHeitiSC-Medium" size:16.f *Scale_Width]
+#define UIFont_M_17 [UIFont fontWithName:@"STHeitiSC-Medium" size:17.f *Scale_Width]
+#define UIFont_M_18 [UIFont fontWithName:@"STHeitiSC-Medium" size:18.f *Scale_Width]
+#define UIFont_M_19 [UIFont fontWithName:@"STHeitiSC-Medium" size:19.f *Scale_Width]
+
+#pragma mark - 公用文件
+#ifndef __IPHONE_4_0
+
+#endif
+
+#ifdef __OBJC__
+#import "AppDelegate.h"
+//  pod
+#import "AFNetworking.h"
+#import "SDWebImageManager.h"
+#import "SDWebImageDownloaderOperation.h"
+#import "SDWebImageManager.h"
+#import "SDCycleScrollView.h"
+#import "MJRefresh.h"
+#import "FMDBSQLite.h"
+
+#pragma mark - 阿里云相关
+#import "LXF_AliyunOSS_UploadFile.h"
+#import "OSSImageUploader.h"
+//#import <AliyunVideoSDK/AliyunVideoSDK.h>
+#import <AliyunOSSiOS/OSSService.h>
+#import <VODUpload/VODUploadClient.h>
+#import <AliyunVodPlayerSDK/AliyunVodPlayer.h>
+#import <AliyunVodPlayerViewSDK/AliyunVodPlayerViewSDK.h>
+
+#pragma mark - 高德地图相关
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <MAMapKit/MAMapKit.h>
+#import <AMapLocationKit/AMapLocationKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
+
+//  判断是否登录
+#import "OADLogInOrNo.h"
+//  用户信息类
+#import "OADAccountInfo.h"
+//  保存用户信息类
+#import "OADSaveAccountInfoTool.h"
+//  用户注册登录请求服务器类
+#import "OADLogInViewModel.h"
+//  接口宏定义类
+#import "OADInterfaceDoc.h"
+//  定义第三方宏文件
+#import "CarOADKeyFile.h"
+//  地图坐标转换
+#import "CLLocation+LXFLocation.h"
+//  创建view类
+#import "UIView+SetRect.h"
+#import "UILabel+inits.h"
+#import "UIButton+inits.h"
+#import "UITextField+inits.h"
+#import "NormalTabsView.h"
+//  字符串相关
+#import "NSString+LabelWidthAndHeight.h"
+#import "NSAttributedString+LabelWidthAndHeight.h"
+#import "ConfigAttributedString.h"
+#import "NSJSON+Extension.h"
+//  身份证验证手机号验证等正则类
+#import "IDCardNumberconfirmationInquiryTool.h"
+//  服务类型类
+#import "ChooseTypeOfServiceTool.h"
+//  城市选择类
+#import "ChooseCityAreaTool.h"
+//  车辆品牌类型选择类
+#import "ChooseCarBrandOrTypeTool.h"
+//  请求服务器方法根类
+#import "HttpTool.h"
+//  其他第三方类
+#import "DateKit.h"
+#import "QTDownloadWebImage.h"
+#import "MBProgressHUD+QT.h"
+#import "QTCheckImageScrollView.h"
+#import "PreserveLikeData.h"
+#import "OADShareButtonView.h"
+#import "QTShareMessage.h"
+#import "ClearCacheFile.h"
+
+#endif
+
+#endif /* CarOAD_pch */

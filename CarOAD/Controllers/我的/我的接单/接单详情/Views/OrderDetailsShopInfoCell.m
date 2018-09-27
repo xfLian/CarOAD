@@ -1,0 +1,201 @@
+//
+//  OrderDetailsShopInfoCell.m
+//  CarOAD
+//
+//  Created by xf_Lian on 2017/12/24.
+//  Copyright © 2017年 xf_Lian. All rights reserved.
+//
+
+#import "OrderDetailsShopInfoCell.h"
+
+#import "MyOrderDetailsData.h"
+
+@interface OrderDetailsShopInfoCell()
+
+@property (nonatomic, strong) UIImageView *iconImageView;
+@property (nonatomic, strong) UILabel     *nameLabel;
+@property (nonatomic, strong) UILabel     *shopNameLabel;
+@property (nonatomic, strong) UILabel     *typeLabel;
+
+@end
+
+@implementation OrderDetailsShopInfoCell
+
+- (void)setupCell {
+    
+    self.backgroundColor = [UIColor whiteColor];
+    self.selectionStyle  = UITableViewCellSelectionStyleNone;
+    
+}
+
+- (void)buildSubview {
+    
+    UIImageView *imageView    = [[UIImageView alloc]initWithFrame:CGRectMake(15 *Scale_Width, 10 *Scale_Height, 70 *Scale_Height, 70 *Scale_Height)];
+    imageView.image           = [UIImage imageNamed:@"logo_back_image_small"];
+    imageView.contentMode     = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds   = YES;
+    imageView.backgroundColor = BackGrayColor;
+    imageView.layer.masksToBounds = YES;
+    imageView.layer.cornerRadius  = 5 *Scale_Height;
+    imageView.tag                 = 200;
+    [self.contentView addSubview:imageView];
+    self.iconImageView = imageView;
+    
+    UILabel *nameLabel = [UILabel createLabelWithFrame:CGRectMake(imageView.x + imageView.width + 10 *Scale_Width, imageView.y + 5 *Scale_Height, 100 *Scale_Height, 20 *Scale_Height)
+                                             labelType:kLabelNormal
+                                                  text:@""
+                                                  font:UIFont_15
+                                             textColor:TextBlackColor
+                                         textAlignment:NSTextAlignmentLeft
+                                                   tag:100];
+    [self.contentView addSubview:nameLabel];
+    self.nameLabel = nameLabel;
+    
+    UILabel *shopNameLabel = [UILabel createLabelWithFrame:CGRectZero
+                                             labelType:kLabelNormal
+                                                  text:@""
+                                                  font:UIFont_14
+                                             textColor:TextGrayColor
+                                         textAlignment:NSTextAlignmentLeft
+                                                   tag:100];
+    [self.contentView addSubview:shopNameLabel];
+    self.shopNameLabel = shopNameLabel;
+    
+    UILabel *typeLabel = [UILabel createLabelWithFrame:CGRectZero
+                                             labelType:kLabelNormal
+                                                  text:@"商家资质已认证"
+                                                  font:UIFont_13
+                                             textColor:CarOadColor(214, 150, 0)
+                                         textAlignment:NSTextAlignmentCenter
+                                                   tag:100];
+    [self.contentView addSubview:typeLabel];
+    [typeLabel sizeToFit];
+    typeLabel.frame = CGRectMake(Screen_Width - 25 *Scale_Width - typeLabel.width, imageView.y, typeLabel.width + 10 *Scale_Width, 20 *Scale_Height);
+    typeLabel.layer.masksToBounds = YES;
+    typeLabel.layer.cornerRadius  = 3 *Scale_Height;
+    typeLabel.layer.borderWidth   = 0.5f;
+    typeLabel.layer.borderColor   = CarOadColor(214, 150, 0).CGColor;
+    self.typeLabel = typeLabel;
+    
+    nameLabel.frame = CGRectMake(imageView.x + imageView.width + 10 *Scale_Width, imageView.y, typeLabel.x - (imageView.x + imageView.width + 20 *Scale_Width), 20 *Scale_Height);
+    
+    shopNameLabel.frame = CGRectMake(nameLabel.x, nameLabel.y + nameLabel.height + 10 *Scale_Height, Screen_Width - nameLabel.x - 15 *Scale_Width, 20 *Scale_Height);
+    
+    self.iconImageView.hidden = YES;
+    self.nameLabel.hidden = YES;
+    self.typeLabel.hidden = YES;
+    self.shopNameLabel.hidden = YES;
+    
+}
+
+- (void)changeState {
+    
+    TableViewCellDataAdapter *adapter = self.dataAdapter;
+    if (adapter.cellType == kOrderDetailsShopInfoCellNoDataType) {
+        
+        [self normalState];
+        
+    } else {
+        
+        [self expendState];
+        
+    }
+    
+}
+
+- (void)normalState {
+    
+    self.iconImageView.hidden = YES;
+    self.nameLabel.hidden = YES;
+    self.typeLabel.hidden = YES;
+    self.shopNameLabel.hidden = YES;
+    
+}
+
+- (void)expendState {
+    
+    self.iconImageView.hidden = NO;
+    self.nameLabel.hidden = NO;
+    self.typeLabel.hidden = NO;
+    self.shopNameLabel.hidden = NO;
+    
+}
+
+- (void)loadContent {
+    
+    MyOrderDetailsData *model = self.dataAdapter.data;
+    
+    if (model.shopLinkmanImg.length > 0) {
+        
+        [QTDownloadWebImage downloadImageForImageView:self.iconImageView
+                                             imageUrl:[NSURL URLWithString:model.shopLinkmanImg]
+                                     placeholderImage:@"logo_back_image_small"
+                                             progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                                 
+                                             }
+                                              success:^(UIImage *finishImage) {
+                                                  
+                                              }];
+        
+    } else {
+        
+        self.iconImageView.image = [UIImage imageNamed:@"logo_back_image_small"];
+        
+    }
+    
+    if (model.shopLinkman.length > 0) {
+        
+        self.nameLabel.text = model.shopLinkman;
+        
+    } else {
+        
+        self.nameLabel.text = @"";
+        
+    }
+    
+    if (model.shopName.length > 0) {
+        
+        self.shopNameLabel.text = model.shopName;
+        
+    } else {
+        
+        self.shopNameLabel.text = @"";
+        
+    }
+    
+    if (model.shopAuth.length > 0 && [model.shopAuth integerValue] == 1) {
+        
+        self.typeLabel.hidden = NO;
+        
+    } else {
+        
+        self.typeLabel.hidden = YES;
+        
+    }
+    
+    [self changeState];
+    
+}
+
+- (void)selectedEvent {
+    
+    
+}
+
++ (CGFloat)cellHeightWithData:(id)data {
+    
+    MyOrderDetailsData *model = data;
+    
+    if (model) {
+        
+        // Expend string height.
+        model.normalStringHeight = 90 *Scale_Height;
+        
+        // One line height.
+        model.noDataStringHeight = 0;
+    }
+    
+    return 0.f;
+}
+
+@end

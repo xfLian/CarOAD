@@ -1,0 +1,16 @@
+platform :ios, '8.0'
+target:CarOAD do
+pod 'AliyunOSSiOS',      '~> 2.6.0'
+pod 'VODUpload'
+pod 'AFNetworking',      '~> 3.0'
+pod 'FMDB',              '~> 2.6.2'
+pod 'WechatOpenSDK',     '~> 1.7.7'
+pod 'SDCycleScrollView', '~> 1.66'
+pod 'SDWebImage'
+pod 'MJRefresh'
+pod 'AMap3DMap',	 '~> 5.5.0'  #3D地图SDK
+pod 'AMapSearch', 	 '~> 5.5.0'  #地图SDK搜索功能
+pod 'AMapLocation', 	 '~> 2.5.0'  #定位SDK 
+pod 'AliyunPlayer_iOS'
+pod 'JPush' 
+end
